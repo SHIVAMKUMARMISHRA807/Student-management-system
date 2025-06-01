@@ -1,0 +1,83 @@
+// StudentManagementSystem.java
+import java.util.HashMap;
+import java.util.Scanner;
+
+class Student {
+    String name;
+    String grade;
+    int attendance;
+
+    Student(String name, String grade, int attendance) {
+        this.name = name;
+        this.grade = grade;
+        this.attendance = attendance;
+    }
+}
+
+public class StudentManagementSystem {
+    static HashMap<String, Student> students = new HashMap<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n--- Student Management System ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. View All Students");
+            System.out.println("3. Update Attendance");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Clear newline
+
+            switch (choice) {
+                case 1 -> addStudent();
+                case 2 -> viewStudents();
+                case 3 -> updateAttendance();
+                case 4 -> {
+                    System.out.println("Exiting...");
+                    return;
+                }
+                default -> System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    static void addStudent() {
+        System.out.print("Enter Roll No: ");
+        String roll = scanner.nextLine();
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Grade: ");
+        String grade = scanner.nextLine();
+        System.out.print("Enter Attendance (%): ");
+        int attendance = scanner.nextInt();
+        scanner.nextLine(); // Clear newline
+
+        students.put(roll, new Student(name, grade, attendance));
+        System.out.println("Student added successfully.");
+    }
+
+    static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No student data available.");
+        } else {
+            for (String roll : students.keySet()) {
+                Student s = students.get(roll);
+                System.out.printf("Roll: %s | Name: %s | Grade: %s | Attendance: %d%%\n", roll, s.name, s.grade, s.attendance);
+            }
+        }
+    }
+
+    static void updateAttendance() {
+        System.out.print("Enter Roll No to update attendance: ");
+        String roll = scanner.nextLine();
+        if (students.containsKey(roll)) {
+            System.out.print("Enter new Attendance (%): ");
+            int att = scanner.nextInt();
+            students.get(roll).attendance = att;
+            System.out.println("Attendance updated.");
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+}
